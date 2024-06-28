@@ -1,0 +1,247 @@
+/* App.css */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.app {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 200px;
+  background-color: #f0f0f0;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar button {
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.3s;
+}
+
+.sidebar button:hover {
+  background-color: #45a049;
+}
+
+.content {
+  flex-grow: 1;
+  padding: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+}
+
+th {
+  background-color: #4CAF50;
+  color: white;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+h1 {
+  color: #4CAF50;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  max-width: 300px;
+}
+
+input, button[type="submit"] {
+  margin-bottom: 10px;
+  padding: 8px;
+}
+
+button[type="submit"] {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button[type="submit"]:hover {
+  background-color: #45a049;
+}
+
+/* App.css */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.app {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 200px;
+  background-color: #f0f0f0;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.sidebar a {
+  padding: 10px;
+  text-decoration: none;
+  color: #333;
+  margin-bottom: 5px;
+  transition: background-color 0.3s;
+}
+
+.sidebar a:hover, .sidebar a.active {
+  background-color: #0078d4;
+  color: white;
+}
+
+.sidebar a i {
+  margin-right: 10px;
+}
+
+.content {
+  flex-grow: 1;
+  padding: 20px;
+  background-color: #fff;
+}
+
+/* ... (rest of the CSS remains the same) ... */
+/* Add this to your App.css or create a new StockMaintenance.css file */
+.stock-maintenance {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.stock-maintenance form > div {
+  margin-bottom: 15px;
+}
+
+.stock-maintenance label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.stock-maintenance input,
+.stock-maintenance select {
+  width: 100%;
+  padding: 5px;
+}
+
+.stock-maintenance button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  cursor: pointer;
+}
+
+.stock-maintenance button:hover {
+  background-color: #45a049;
+}
+
+/* Add this to your App.css or create a new SearchReagent.css file */
+.search-reagent {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.search-reagent form {
+  margin-bottom: 20px;
+}
+
+.search-reagent input[type="text"] {
+  width: 300px;
+  padding: 5px;
+  margin-right: 10px;
+}
+
+.search-reagent button {
+  padding: 5px 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.search-reagent button:hover {
+  background-color: #45a049;
+}
+
+.search-reagent table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.search-reagent th, .search-reagent td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.search-reagent th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.search-reagent tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+/* Add this to your App.css or create a new ExpiringSoon.css file */
+.expiring-soon table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.expiring-soon th, .expiring-soon td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.expiring-soon th {
+  background-color: #4CAF50;
+  font-weight: bold;
+}
+
+.expiring-soon tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.expiring-soon .urgent {
+  background-color: #ffcccc;
+}
+
+.expiring-soon .urgent td {
+  font-weight: bold;
+}
+
