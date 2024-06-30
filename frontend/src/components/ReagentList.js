@@ -1,37 +1,54 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function ReagentList() {
   const [reagents, setReagents] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    fetch('http://localhost:5000/reagents')
-      .then(response => response.json())
-      .then(data => setReagents(data));
+    fetch("http://localhost:5000/reagents")
+      .then((response) => response.json())
+      .then((data) => setReagents(data));
   }, []);
 
-  const handleDelete = id => {
-    if (window.confirm('Are you sure you want to delete this reagent?')) {
+  const notify_Delete_Toast = (message) => {
+    toast.warn(message, {
+      position: "top-right",
+      autoClose: 4000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  };
+
+  const handleDelete = (id) => {
+    if (window.confirm("Are you sure you want to delete this reagent?")) {
       fetch(`http://localhost:5000/reagents/${id}`, {
-        method: 'DELETE',
+        method: "DELETE",
       })
         .then(() => {
-          setReagents(reagents.filter(reagent => reagent.id !== id));
+          setReagents(reagents.filter((reagent) => reagent.id !== id));
+          notify_Delete_Toast("Reagent deleted successfully !");
         })
-        .catch(error => {
-          console.error('Error deleting reagent:', error);
+        .catch((error) => {
+          console.error("Error deleting reagent:", error);
+          notify_Delete_Toast("Error deleting reagent");
         });
     }
   };
 
-  const handleSearch = event => {
+  const handleSearch = (event) => {
     setSearchTerm(event.target.value);
   };
 
-  const filteredReagents = reagents.filter(reagent =>
+  const filteredReagents = reagents.filter((reagent) =>
     reagent.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -45,7 +62,7 @@ function ReagentList() {
           placeholder="Search by name"
           value={searchTerm}
           onChange={handleSearch}
-          style={{ marginBottom: '10px' }}
+          style={{ marginBottom: "10px" }}
         />
       </div>
       <table>
@@ -60,7 +77,7 @@ function ReagentList() {
           </tr>
         </thead>
         <tbody>
-          {filteredReagents.map(reagent => (
+          {filteredReagents.map((reagent) => (
             <tr key={reagent.id}>
               <td>{reagent.name}</td>
               <td>{reagent.quantity}</td>
@@ -68,7 +85,10 @@ function ReagentList() {
               <td>{reagent.source}</td>
               <td>{reagent.expiry}</td>
               <td>
-                <Link to={`/edit-reagent/${reagent.id}`} style={{ marginRight: '10px' }}>
+                <Link
+                  to={`/edit-reagent/${reagent.id}`}
+                  style={{ marginRight: "10px" }}
+                >
                   <FontAwesomeIcon icon={faEdit} title="Edit" />
                 </Link>
                 <button onClick={() => handleDelete(reagent.id)}>
@@ -79,6 +99,7 @@ function ReagentList() {
           ))}
         </tbody>
       </table>
+      <ToastContainer />
     </div>
   );
 }
