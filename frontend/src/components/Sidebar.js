@@ -18,9 +18,7 @@ function Sidebar() {
       <NavLink to="/stock" activeClassName="active">
         <i className="fas fa-boxes"></i> Stock Maintenance
       </NavLink>
-      <NavLink to="/search" activeClassName="active">
-        <i className="fas fa-search"></i> Search Reagent
-      </NavLink>
+      
     </div>
   );
 }

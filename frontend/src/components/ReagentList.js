@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 function ReagentList() {
   const [reagents, setReagents] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     fetch('http://localhost:5000/reagents')
@@ -24,9 +25,27 @@ function ReagentList() {
       });
   };
 
+  const handleSearch = event => {
+    setSearchTerm(event.target.value);
+  };
+
+  const filteredReagents = reagents.filter(reagent =>
+    reagent.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div>
       <h1>Reagent List</h1>
+      <div className="mb-3">
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Search by name"
+          value={searchTerm}
+          onChange={handleSearch}
+          style={{ marginBottom: '10px' }} // Add CSS here
+        />
+      </div>
       <table>
         <thead>
           <tr>
@@ -35,25 +54,20 @@ function ReagentList() {
             <th>Quantity Measure</th>
             <th>Source</th>
             <th>Expiry</th>
-            {/* <th>Update</th> */}
             <th>Delete</th>
           </tr>
         </thead>
         <tbody>
-          {reagents.map(reagent => (
+          {filteredReagents.map(reagent => (
             <tr key={reagent.id}>
               <td>{reagent.name}</td>
               <td>{reagent.quantity}</td>
               <td>{reagent.quantity_measure}</td>
               <td>{reagent.source}</td>
               <td>{reagent.expiry}</td>
-              {/* <td>
-                <button onClick={() => console.log(`Update reagent ${reagent.id}`)}>Update</button>
-              </td> */}
               <td>
                 <button onClick={() => handleDelete(reagent.id)}>Delete</button>
               </td>
-              
             </tr>
           ))}
         </tbody>
