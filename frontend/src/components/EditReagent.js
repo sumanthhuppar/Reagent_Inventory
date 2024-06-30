@@ -1,55 +1,72 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 
 function EditReagent() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [reagent, setReagent] = useState({
-    name: '',
+    name: "",
     quantity: 0,
-    quantity_measure: '',
-    source: '',
-    expiry: '',
+    quantity_measure: "",
+    source: "",
+    expiry: "",
   });
 
   useEffect(() => {
     // Fetch reagent details for editing
     fetch(`http://localhost:5000/reagents/${id}`)
-      .then(response => response.json())
-      .then(data => setReagent(data))
-      .catch(error => console.error('Error fetching reagent:', error));
+      .then((response) => response.json())
+      .then((data) => setReagent(data))
+      .catch((error) => console.error("Error fetching reagent:", error));
   }, [id]);
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
-    setReagent(prevState => ({
+    setReagent((prevState) => ({
       ...prevState,
       [name]: value,
     }));
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     // Update reagent in database
     fetch(`http://localhost:5000/reagents/${id}`, {
-      method: 'PUT',
+      method: "PUT",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(reagent),
     })
-      .then(response => response.json())
-      .then(data => {
+      .then((response) => response.json())
+      .then((data) => {
         // Redirect to reagent list after successful update
-        navigate('/');
+        navigate("/");
       })
-      .catch(error => console.error('Error updating reagent:', error));
+      .catch((error) => console.error("Error updating reagent:", error));
+  };
+  const styles = {
+    container: {
+      display: "flex",
+      flexDirection: "column", // Stack items vertically
+      justifyContent: "center", // Center horizontally
+      alignItems: "center", // Center vertically
+      maxHeight: "100vh", // Ensure container takes at least full viewport height
+    },
+    form: {
+      width: "300px",
+    },
+    // Other styles for form, formGroup, label, input, button, etc.
   };
 
   return (
-    <div className="edit-reagent-container">
-      <h1>Edit Reagent</h1>
-      <form className="edit-reagent-form" onSubmit={handleSubmit}>
+    <div className="edit-reagent-container" style={styles.container}>
+      <h1>Edit Reagent.</h1>
+      <form
+        className="edit-reagent-form"
+        onSubmit={handleSubmit}
+        style={styles.form}
+      >
         <div className="form-group">
           <label htmlFor="name">Name:</label>
           <input
