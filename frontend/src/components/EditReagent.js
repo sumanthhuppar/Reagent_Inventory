@@ -45,11 +45,28 @@ function EditReagent() {
       })
       .catch((error) => console.error("Error updating reagent:", error));
   };
+  const styles = {
+    container: {
+      display: "flex",
+      flexDirection: "column", // Stack items vertically
+      justifyContent: "center", // Center horizontally
+      alignItems: "center", // Center vertically
+      maxHeight: "100vh", // Ensure container takes at least full viewport height
+    },
+    form: {
+      width: "300px",
+    },
+    // Other styles for form, formGroup, label, input, button, etc.
+  };
 
   return (
-    <div className="edit-reagent-container">
-      <h1>Edit Reagent</h1>
-      <form className="edit-reagent-form" onSubmit={handleSubmit}>
+    <div className="edit-reagent-container" style={styles.container}>
+      <h1>Edit Reagent.</h1>
+      <form
+        className="edit-reagent-form"
+        onSubmit={handleSubmit}
+        style={styles.form}
+      >
         <div className="form-group">
           <label htmlFor="name">Name:</label>
           <input

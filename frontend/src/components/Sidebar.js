@@ -5,9 +5,9 @@ import { NavLink } from "react-router-dom";
 function Sidebar() {
   return (
     <div className="sidebar">
-      <h2>Reagent Inventory</h2>
+      <h2 style={{ fontSize: "32px", color: "#3cb371" }}>ReAgent</h2>
       <NavLink to="/" activeClassName="active">
-        <i className="fas fa-list"></i> Reagent List
+        <i className="fas fa-list"></i> Reagents List
       </NavLink>
       <NavLink to="/add" activeClassName="active">
         <i className="fas fa-plus"></i> Add Reagent

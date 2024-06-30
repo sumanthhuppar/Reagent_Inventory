@@ -25,7 +25,7 @@ function ReagentList() {
       pauseOnHover: true,
       draggable: true,
       progress: undefined,
-      theme: "light",
+      theme: "dark",
     });
   };
 
@@ -68,7 +68,7 @@ function ReagentList() {
 
   return (
     <div>
-      <h1>Reagent List</h1>
+      <h1>Reagents List.</h1>
       <div className="mb-3">
         <input
           type="text"
