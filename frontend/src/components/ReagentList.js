@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEdit, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 function ReagentList() {
   const [reagents, setReagents] = useState([]);
@@ -12,17 +14,17 @@ function ReagentList() {
   }, []);
 
   const handleDelete = id => {
-    // Implement your delete logic here, e.g., using Axios or fetch
-    fetch(`http://localhost:5000/reagents/${id}`, {
-      method: 'DELETE',
-    })
-      .then(() => {
-        // Remove the deleted reagent from the state
-        setReagents(reagents.filter(reagent => reagent.id !== id));
+    if (window.confirm('Are you sure you want to delete this reagent?')) {
+      fetch(`http://localhost:5000/reagents/${id}`, {
+        method: 'DELETE',
       })
-      .catch(error => {
-        console.error('Error deleting reagent:', error);
-      });
+        .then(() => {
+          setReagents(reagents.filter(reagent => reagent.id !== id));
+        })
+        .catch(error => {
+          console.error('Error deleting reagent:', error);
+        });
+    }
   };
 
   const handleSearch = event => {
@@ -43,7 +45,7 @@ function ReagentList() {
           placeholder="Search by name"
           value={searchTerm}
           onChange={handleSearch}
-          style={{ marginBottom: '10px' }} // Add CSS here
+          style={{ marginBottom: '10px' }}
         />
       </div>
       <table>
@@ -54,7 +56,7 @@ function ReagentList() {
             <th>Quantity Measure</th>
             <th>Source</th>
             <th>Expiry</th>
-            <th>Delete</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -66,7 +68,12 @@ function ReagentList() {
               <td>{reagent.source}</td>
               <td>{reagent.expiry}</td>
               <td>
-                <button onClick={() => handleDelete(reagent.id)}>Delete</button>
+                <Link to={`/edit-reagent/${reagent.id}`} style={{ marginRight: '10px' }}>
+                  <FontAwesomeIcon icon={faEdit} title="Edit" />
+                </Link>
+                <button onClick={() => handleDelete(reagent.id)}>
+                  <FontAwesomeIcon icon={faTrashAlt} title="Delete" />
+                </button>
               </td>
             </tr>
           ))}

@@ -1,6 +1,7 @@
-// components/AddReagent.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+// components/AddReagent.js
 
 function AddReagent() {
   const [reagent, setReagent] = useState({
@@ -40,8 +41,8 @@ function AddReagent() {
       <h1>Add New Reagent</h1>
       <form onSubmit={handleSubmit}>
         <input type="text" name="name" placeholder="Name" onChange={handleChange} required />
-        <input type="number" name="quantity" placeholder="Quantity" onChange={handleChange} required />
-        <input type="text" name="quantity_measure" placeholder="Quantity_Measure" onChange={handleChange} required />
+        <input type="number" name="quantity" placeholder="Quantity" step="0.01" onChange={handleChange} required />
+        <input type="text" name="quantity_measure" placeholder="Quantity Measure" onChange={handleChange} required />
         <input type="text" name="source" placeholder="Source" onChange={handleChange} required />
         <input type="date" name="expiry" placeholder="Expiry Date" onChange={handleChange} required />
         <button type="submit">Add Reagent</button>

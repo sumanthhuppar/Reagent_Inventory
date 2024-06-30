@@ -6,8 +6,8 @@ import ReagentList from './components/ReagentList';
 import AddReagent from './components/AddReagent';
 import ExpiringSoon from './components/ExpiringSoon';
 import StockMaintenance from './components/StockMaintenance';
-import SearchReagent from './components/SearchReagent';
-import UpdateReagent from './components/UpdateReagent';
+
+import EditReagent from './components/EditReagent';
 import './App.css';
 
 function App() {
@@ -21,8 +21,8 @@ function App() {
             <Route path="/add" element={<AddReagent />} />
             <Route path="/expiring" element={<ExpiringSoon />} />
             <Route path="/stock" element={<StockMaintenance />} />
-            <Route path="/search" element={<SearchReagent />} />
-            <Route path="/update/:id" component={<UpdateReagent/>} />
+            <Route path="/edit-reagent/:id" element={<EditReagent />} />
+            
           </Routes>
         </div>
       </div>

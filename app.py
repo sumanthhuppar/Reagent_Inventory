@@ -16,7 +16,7 @@ def init_db():
     conn.execute('''CREATE TABLE IF NOT EXISTS reagents
                     (id INTEGER PRIMARY KEY AUTOINCREMENT,
                     name TEXT NOT NULL,
-                    quantity INTEGER,
+                    quantity FLOAT,
                     quantity_measure TEXT,
                     source TEXT,
                     expiry DATE)''')
@@ -42,20 +42,28 @@ def reagents():
 @app.route('/reagents/<int:id>', methods=['GET', 'PUT', 'DELETE'])
 def reagent(id):
     conn = get_db_connection()
+    
     if request.method == 'PUT':
         data = request.json
         conn.execute('UPDATE reagents SET name=?, quantity=?, quantity_measure=?, source=?, expiry=? WHERE id=?',
                      (data['name'], data['quantity'], data['quantity_measure'], data['source'], data['expiry'], id))
         conn.commit()
         return jsonify({"message": "Reagent updated successfully"})
+    
     elif request.method == 'DELETE':
         conn.execute('DELETE FROM reagents WHERE id=?', (id,))
         conn.commit()
         return jsonify({"message": "Reagent deleted successfully"})
     
+    # Fetch reagent details
     reagent = conn.execute('SELECT * FROM reagents WHERE id=?', (id,)).fetchone()
     conn.close()
+    
+    if not reagent:
+        return jsonify({"error": "Reagent not found"}), 404
+    
     return jsonify(dict(reagent))
+
 
 @app.route('/reagents/expiring-soon', methods=['GET'])
 def expiring_soon():
@@ -83,3 +91,5 @@ def search_reagents():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+
