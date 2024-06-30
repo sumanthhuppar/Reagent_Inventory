@@ -25,16 +25,16 @@ function Sidebar() {
         </span>
       </h2>
       <NavLink to="/" activeClassName="active">
-        <i className="fas fa-list"></i> Reagents List
+        <i className="fas fa-list"></i> REAGENTS LIST
       </NavLink>
       <NavLink to="/add" activeClassName="active">
-        <i className="fas fa-plus"></i> Add Reagent
+        <i className="fas fa-plus"></i> ADD REAGENTS
       </NavLink>
       <NavLink to="/expiring" activeClassName="active">
-        <i className="fas fa-exclamation-triangle"></i> Expiring Soon
+        <i className="fas fa-exclamation-triangle"></i> EXPIRING SOON
       </NavLink>
       <NavLink to="/stock" activeClassName="active">
-        <i className="fas fa-boxes"></i> Stock Maintenance
+        <i className="fas fa-boxes"></i> STOCK CARE
       </NavLink>
       <style>
         {`

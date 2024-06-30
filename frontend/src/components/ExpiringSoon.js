@@ -37,7 +37,7 @@ function ExpiringSoon() {
 
   return (
     <div className="expiring-soon">
-      <h1 style={{ textAlign: "center" }}>Reagents Expiring Soon</h1>
+      <h1 style={{ textAlign: "center" }}>Reagents Expiring Soon.</h1>
       <table>
         <thead>
           <tr>

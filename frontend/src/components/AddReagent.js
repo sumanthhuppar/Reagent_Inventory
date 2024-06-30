@@ -86,7 +86,7 @@ function AddReagent() {
 
   return (
     <div style={styles.container}>
-      <h1 style={styles.title}>Add New Reagent</h1>
+      <h1 style={styles.title}>Add New Reagent.</h1>
       <form onSubmit={handleSubmit} style={{ width: "100%" }}>
         <div style={styles.formGroup}>
           <input
