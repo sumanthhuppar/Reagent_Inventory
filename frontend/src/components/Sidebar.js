@@ -1,6 +1,6 @@
 // components/Sidebar.js
-import React from 'react';
-import { NavLink } from 'react-router-dom';
+import React from "react";
+import { NavLink } from "react-router-dom";
 
 function Sidebar() {
   return (
@@ -18,7 +18,6 @@ function Sidebar() {
       <NavLink to="/stock" activeClassName="active">
         <i className="fas fa-boxes"></i> Stock Maintenance
       </NavLink>
-      
     </div>
   );
 }
