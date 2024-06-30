@@ -66,39 +66,83 @@ function ReagentList() {
     reagent.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const styles = {
+    header: {
+      color: "darkgreen",
+    },
+    h1: {
+      textAlign: "center",
+      color: "#4CAF50",
+      marginBottom: "20px",
+    },
+    table: {
+      width: "100%",
+      borderCollapse: "collapse",
+    },
+    th: {
+      color: "white",
+      backgroundColor: "#388E3C", // medium green
+      border: "0.8px solid white",
+      padding: "10px",
+      textAlign: "left",
+    },
+    td: {
+      padding: "10px",
+      borderBottom: "1px solid #ddd",
+    },
+    inputContainer: {
+      marginBottom: "20px",
+      textAlign: "center",
+    },
+    input: {
+      width: "40%",
+      padding: "8.5px",
+      fontSize: "16px",
+      borderRadius: "8px",
+      border: "0.8px solid #388E3C",
+      boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+    },
+  };
+
   return (
     <div>
-      <h1>Reagents List.</h1>
-      <div className="mb-3">
+      <h1 style={styles.h1}>Reagents List.</h1>
+      <div className="mb-3" style={styles.inputContainer}>
         <input
           type="text"
           className="form-control"
-          placeholder="Search by name"
+          placeholder="Search by Name..."
           value={searchTerm}
           onChange={handleSearch}
-          style={{ marginBottom: "10px" }}
+          style={styles.input}
         />
       </div>
-      <table>
+      <table style={styles.table}>
         <thead>
           <tr>
-            <th>Name</th>
-            <th>Quantity</th>
-            <th>Quantity Measure</th>
-            <th>Source</th>
-            <th>Expiry</th>
-            <th>Actions</th>
+            <th style={styles.th}>Name</th>
+            <th style={styles.th}>Quantity</th>
+            <th style={styles.th}>Quantity Measure</th>
+            <th style={styles.th}>Source</th>
+            <th style={styles.th}>Expiry</th>
+            <th style={styles.th}>Actions</th>
           </tr>
         </thead>
         <tbody>
           {filteredReagents.map((reagent) => (
             <tr key={reagent.id}>
-              <td>{reagent.name}</td>
-              <td>{reagent.quantity}</td>
-              <td>{reagent.quantity_measure}</td>
-              <td>{reagent.source}</td>
-              <td>{reagent.expiry}</td>
-              <td style={{ verticalAlign: "middle", textAlign: "center" }}>
+              <td style={styles.td}>{reagent.name}</td>
+              <td style={styles.td}>{reagent.quantity}</td>
+              <td style={styles.td}>{reagent.quantity_measure}</td>
+              <td style={styles.td}>{reagent.source}</td>
+              <td style={styles.td}>{reagent.expiry}</td>
+              <td
+                style={{
+                  ...styles.td,
+                  verticalAlign: "middle",
+                  textAlign: "center",
+                }}
+              >
                 <Link
                   to={`/edit-reagent/${reagent.id}`}
                   style={{ marginRight: "10px" }}
