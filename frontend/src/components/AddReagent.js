@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-// components/AddReagent.js
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function AddReagent() {
   const [reagent, setReagent] = useState({
     name: "",
-    quantity: 0,
+    quantity: "",
     quantity_measure: "",
     source: "",
     expiry: "",
@@ -17,8 +17,39 @@ function AddReagent() {
     setReagent({ ...reagent, [e.target.name]: e.target.value });
   };
 
+  const validateForm = () => {
+    const { quantity, quantity_measure, source, expiry } = reagent;
+    const currentDate = new Date().toISOString().split("T")[0];
+
+    if (quantity < 0 || isNaN(quantity)) {
+      toast.error("Quantity must be a number 0 or higher.", { theme: "dark" });
+      return false;
+    }
+
+    if (!/^[a-zA-Z]+-?\d*|\d+[a-zA-Z]+$/.test(quantity_measure)) {
+      toast.error("Measure must be non-negative or alphanumeric.", {
+        theme: "dark",
+      });
+      return false;
+    }
+
+    if (/^\d+$/.test(source)) {
+      toast.error("Source cannot be only numbers.", { theme: "dark" });
+      return false;
+    }
+
+    if (expiry < currentDate) {
+      toast.error("Expiry date must be in the future.", { theme: "dark" });
+      return false;
+    }
+
+    return true;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
+
     fetch("http://localhost:5000/reagents", {
       method: "POST",
       headers: {
@@ -42,8 +73,8 @@ function AddReagent() {
       flexDirection: "column",
       alignItems: "center",
       justifyContent: "center",
-      minHeight: "80vh", // Adjusted height
-      padding: "15px", // Reduced padding
+      minHeight: "80vh",
+      padding: "15px",
       boxSizing: "border-box",
       maxWidth: "600px",
       margin: "0 auto",
@@ -53,14 +84,14 @@ function AddReagent() {
     },
     title: {
       textAlign: "center",
-      marginBottom: "15px", // Reduced margin
+      marginBottom: "15px",
     },
     formGroup: {
-      marginBottom: "10px", // Reduced margin
+      marginBottom: "10px",
     },
     label: {
       display: "block",
-      marginBottom: "5px", // Reduced margin
+      marginBottom: "5px",
       marginLeft: "2px",
       fontWeight: "bold",
     },
@@ -146,6 +177,7 @@ function AddReagent() {
           Add Reagent
         </button>
       </form>
+      <ToastContainer />
     </div>
   );
 }
