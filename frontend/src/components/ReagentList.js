@@ -5,6 +5,7 @@ import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import DeleteConfirmation from "./DeleteConfirmation";
+import moment from "moment";
 
 function ReagentList() {
   const [reagents, setReagents] = useState([]);
@@ -60,6 +61,13 @@ function ReagentList() {
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
+  };
+
+  const getDaysToExpire = (expiryDate) => {
+    const expiry = moment(expiryDate);
+    const today = moment();
+    const diff = expiry.diff(today, "days");
+    return diff < 0 ? 0 : diff;
   };
 
   const filteredReagents = reagents.filter((reagent) =>
@@ -125,58 +133,73 @@ function ReagentList() {
             <th style={styles.th}>Quantity Measure</th>
             <th style={styles.th}>Source</th>
             <th style={styles.th}>Expiry</th>
+            <th style={styles.th}>Days to Expire</th>
             <th style={styles.th}>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {filteredReagents.map((reagent) => (
-            <tr key={reagent.id}>
-              <td style={styles.td}>{reagent.name}</td>
-              <td style={styles.td}>{reagent.quantity}</td>
-              <td style={styles.td}>{reagent.quantity_measure}</td>
-              <td style={styles.td}>{reagent.source}</td>
-              <td style={styles.td}>{reagent.expiry}</td>
-              <td
-                style={{
-                  ...styles.td,
-                  verticalAlign: "middle",
-                  textAlign: "center",
-                }}
+          {filteredReagents.map((reagent, index) => {
+            const daysToExpire = getDaysToExpire(reagent.expiry);
+            const textColor =
+              daysToExpire === 0
+                ? "red"
+                : daysToExpire < 30
+                ? "orange"
+                : "green";
+            const backgroundColor = index % 2 === 0 ? "#f9f9f9" : "#e0e0e0";
+            return (
+              <tr
+                key={reagent.id}
+                style={{ backgroundColor, color: textColor }}
               >
-                <Link
-                  to={`/edit-reagent/${reagent.id}`}
-                  style={{ marginRight: "10px" }}
-                >
-                  <FontAwesomeIcon
-                    icon={faEdit}
-                    title="Edit"
-                    style={{
-                      width: "25px",
-                      height: "20px",
-                      marginLeft: "1px",
-                      marginRight: "7px",
-                    }}
-                  />
-                </Link>
-                <button
+                <td style={styles.td}>{reagent.name}</td>
+                <td style={styles.td}>{reagent.quantity}</td>
+                <td style={styles.td}>{reagent.quantity_measure}</td>
+                <td style={styles.td}>{reagent.source}</td>
+                <td style={styles.td}>{reagent.expiry}</td>
+                <td style={styles.td}>{daysToExpire}</td>
+                <td
                   style={{
-                    border: "none",
-                    background: "none",
-                    padding: 0,
-                    cursor: "pointer",
+                    ...styles.td,
+                    verticalAlign: "middle",
+                    textAlign: "center",
                   }}
-                  onClick={() => handleDelete(reagent.id)}
                 >
-                  <lord-icon
-                    src="https://cdn.lordicon.com/skkahier.json"
-                    trigger="hover"
-                    colors="primary:#c71f16"
-                    style={{ width: "28px", height: "25px" }}
-                  ></lord-icon>
-                </button>
-              </td>
-            </tr>
-          ))}
+                  <Link
+                    to={`/edit-reagent/${reagent.id}`}
+                    style={{ marginRight: "10px" }}
+                  >
+                    <FontAwesomeIcon
+                      icon={faEdit}
+                      title="Edit"
+                      style={{
+                        width: "25px",
+                        height: "20px",
+                        marginLeft: "1px",
+                        marginRight: "7px",
+                      }}
+                    />
+                  </Link>
+                  <button
+                    style={{
+                      border: "none",
+                      background: "none",
+                      padding: 0,
+                      cursor: "pointer",
+                    }}
+                    onClick={() => handleDelete(reagent.id)}
+                  >
+                    <lord-icon
+                      src="https://cdn.lordicon.com/skkahier.json"
+                      trigger="hover"
+                      colors="primary:#c71f16"
+                      style={{ width: "28px", height: "25px" }}
+                    ></lord-icon>
+                  </button>
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
       <ToastContainer />
