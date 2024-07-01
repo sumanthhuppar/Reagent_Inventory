@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function EditReagent() {
   const { id } = useParams();
@@ -28,8 +30,39 @@ function EditReagent() {
     }));
   };
 
+  const handleConfirmZero = (name, e) => {
+    if (window.confirm("You entered zero. Do you want to proceed?")) {
+      handleSubmit(e);
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Validation checks
+    if (reagent.quantity < 0) {
+      toast.error("Quantity must be 0 or more.", { theme: "dark" });
+      return;
+    }
+    if (reagent.quantity === 0) {
+      handleConfirmZero("quantity", e);
+      return;
+    }
+    if (!/^([a-zA-Z]+-?\d*|\d+[a-zA-Z]+)$/.test(reagent.quantity_measure)) {
+      toast.error("Measure must be non-negative or alphanumeric.", {
+        theme: "dark",
+      });
+      return;
+    }
+    if (reagent.quantity_measure === "0") {
+      handleConfirmZero("quantity_measure", e);
+      return;
+    }
+    if (/^\d+$/.test(reagent.source)) {
+      toast.error("Source cannot be only numbers.", { theme: "dark" });
+      return;
+    }
+
     // Update reagent in database
     fetch(`http://localhost:5000/reagents/${id}`, {
       method: "PUT",
@@ -45,18 +78,18 @@ function EditReagent() {
       })
       .catch((error) => console.error("Error updating reagent:", error));
   };
+
   const styles = {
     container: {
       display: "flex",
-      flexDirection: "column", // Stack items vertically
-      justifyContent: "center", // Center horizontally
-      alignItems: "center", // Center vertically
-      maxHeight: "100vh", // Ensure container takes at least full viewport height
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center",
+      maxHeight: "100vh",
     },
     form: {
       width: "300px",
     },
-    // Other styles for form, formGroup, label, input, button, etc.
   };
 
   return (
@@ -87,6 +120,7 @@ function EditReagent() {
             value={reagent.quantity}
             onChange={handleChange}
             required
+            min="0"
           />
         </div>
         <div className="form-group">
@@ -124,6 +158,7 @@ function EditReagent() {
         </div>
         <button type="submit">Save Changes</button>
       </form>
+      <ToastContainer />
     </div>
   );
 }
