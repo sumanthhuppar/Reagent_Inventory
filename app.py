@@ -19,7 +19,8 @@ def init_db():
                     quantity FLOAT,
                     quantity_measure TEXT,
                     source TEXT,
-                    expiry DATE)''')
+                    expiry DATE,
+                    last_updated DATE)''')
     conn.commit()
     conn.close()
 
@@ -30,8 +31,9 @@ def reagents():
     conn = get_db_connection()
     if request.method == 'POST':
         data = request.json
-        conn.execute('INSERT INTO reagents (name, quantity, quantity_measure, source, expiry) VALUES (?, ?, ?, ?, ?)',
-                     (data['name'], data['quantity'], data['quantity_measure'], data['source'], data['expiry']))
+        current_date = datetime.now().strftime('%Y-%m-%d')
+        conn.execute('INSERT INTO reagents (name, quantity, quantity_measure, source, expiry, last_updated) VALUES (?, ?, ?, ?, ?, ?)',
+                     (data['name'], data['quantity'], data['quantity_measure'], data['source'], data['expiry'], current_date))
         conn.commit()
         return jsonify({"message": "Reagent added successfully"}), 201
     
@@ -45,14 +47,17 @@ def reagent(id):
     
     if request.method == 'PUT':
         data = request.json
-        conn.execute('UPDATE reagents SET name=?, quantity=?, quantity_measure=?, source=?, expiry=? WHERE id=?',
-                     (data['name'], data['quantity'], data['quantity_measure'], data['source'], data['expiry'], id))
+        current_date = datetime.now().strftime('%Y-%m-%d')
+        conn.execute('UPDATE reagents SET name=?, quantity=?, quantity_measure=?, source=?, expiry=?, last_updated=? WHERE id=?',
+                     (data['name'], data['quantity'], data['quantity_measure'], data['source'], data['expiry'], current_date, id))
         conn.commit()
+        conn.close()
         return jsonify({"message": "Reagent updated successfully"})
     
     elif request.method == 'DELETE':
         conn.execute('DELETE FROM reagents WHERE id=?', (id,))
         conn.commit()
+        conn.close()
         return jsonify({"message": "Reagent deleted successfully"})
     
     # Fetch reagent details
@@ -63,7 +68,6 @@ def reagent(id):
         return jsonify({"error": "Reagent not found"}), 404
     
     return jsonify(dict(reagent))
-
 
 @app.route('/reagents/expiring-soon', methods=['GET'])
 def expiring_soon():
@@ -82,14 +86,14 @@ def search_reagents():
     query = request.json.get('query', '')
 
     # Perform search logic (example: simple substring search)
+    conn = get_db_connection()
     results = []
-    for reagent in reagents:
-        if query.lower() in reagent['name'].lower():
-            results.append(reagent)
+    for row in conn.execute('SELECT * FROM reagents'):
+        if query.lower() in row['name'].lower():
+            results.append(dict(row))
+    conn.close()
 
     return jsonify(results)
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-

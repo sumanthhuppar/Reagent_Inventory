@@ -114,7 +114,7 @@ function ReagentList() {
 
   return (
     <div>
-      <h1 style={styles.h1}>Reagents List.</h1>
+      <h1 style={styles.h1}>Reagents List</h1>
       <div className="mb-3" style={styles.inputContainer}>
         <input
           type="text"
@@ -134,6 +134,7 @@ function ReagentList() {
             <th style={styles.th}>Source</th>
             <th style={styles.th}>Expiry</th>
             <th style={styles.th}>Days to Expire</th>
+            <th style={styles.th}>Last Updated</th>
             <th style={styles.th}>Actions</th>
           </tr>
         </thead>
@@ -147,6 +148,10 @@ function ReagentList() {
                 ? "orange"
                 : "green";
             const backgroundColor = index % 2 === 0 ? "#f9f9f9" : "#e0e0e0";
+            const formattedExpiry = moment(reagent.expiry).format("DD-MM-YYYY");
+            const formattedLastUpdated = moment(reagent.last_updated).format(
+              "DD-MM-YYYY"
+            );
             return (
               <tr
                 key={reagent.id}
@@ -156,8 +161,9 @@ function ReagentList() {
                 <td style={styles.td}>{reagent.quantity}</td>
                 <td style={styles.td}>{reagent.quantity_measure}</td>
                 <td style={styles.td}>{reagent.source}</td>
-                <td style={styles.td}>{reagent.expiry}</td>
+                <td style={styles.td}>{formattedExpiry}</td>
                 <td style={styles.td}>{daysToExpire}</td>
+                <td style={styles.td}>{formattedLastUpdated}</td>
                 <td
                   style={{
                     ...styles.td,

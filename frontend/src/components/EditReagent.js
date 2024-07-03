@@ -47,22 +47,25 @@ function EditReagent() {
     quantity_measure: "",
     source: "",
     expiry: "",
+    last_updated: "",
   });
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [confirmationCallback, setConfirmationCallback] = useState(null);
 
   useEffect(() => {
-    // Fetch reagent details for editing
     fetch(`http://localhost:5000/reagents/${id}`)
       .then((response) => response.json())
-      .then((data) => setReagent(data))
+      .then((data) => {
+        setReagent({
+          ...data,
+          last_updated: moment(data.last_updated).format("DD-MM-YYYY"),
+        });
+      })
       .catch((error) => console.error("Error fetching reagent:", error));
   }, [id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-
-    // Update reagent state
     setReagent((prevState) => ({
       ...prevState,
       [name]: value,
@@ -72,7 +75,6 @@ function EditReagent() {
   const validateAndSubmit = (e) => {
     e.preventDefault();
 
-    // Validation checks
     if (reagent.quantity <= 0) {
       toast.error("Quantity must be above 0.", { theme: "dark" });
       return;
@@ -105,7 +107,6 @@ function EditReagent() {
   };
 
   const handleSubmit = (e) => {
-    // Update reagent in database
     fetch(`http://localhost:5000/reagents/${id}`, {
       method: "PUT",
       headers: {
@@ -115,7 +116,6 @@ function EditReagent() {
     })
       .then((response) => response.json())
       .then((data) => {
-        // Redirect to reagent list after successful update
         navigate("/");
       })
       .catch((error) => console.error("Error updating reagent:", error));
@@ -130,7 +130,7 @@ function EditReagent() {
 
   return (
     <div className="edit-reagent-container" style={styles.container}>
-      <h1>Edit Reagent.</h1>
+      <h1>Edit Reagent</h1>
       <form
         className="edit-reagent-form"
         onSubmit={validateAndSubmit}
@@ -190,6 +190,16 @@ function EditReagent() {
             value={reagent.expiry}
             onChange={handleChange}
             required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="last_updated">Last Updated:</label>
+          <input
+            type="text"
+            id="last_updated"
+            name="last_updated"
+            value={moment(reagent.last_updated, "DD-MM-YYYY").format("DD-MM-YYYY")}
+            readOnly
           />
         </div>
         <button type="submit">Save Changes</button>

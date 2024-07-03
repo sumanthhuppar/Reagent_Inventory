@@ -113,19 +113,7 @@ function StockMaintenance() {
             box-sizing: border-box;
             overflow-y: hidden;
           }
-          .form-wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-            max-width: 600px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            box-sizing: border-box;
-            overflow-y: auto;
-          }
+          
           .form-container {
             width: 100%;
           }
@@ -178,7 +166,7 @@ function StockMaintenance() {
       </style>
       <ToastContainer />
       <div className="form-wrapper">
-        <h1 className="form-header">Stock Maintenance.</h1>
+        <h1 className="form-header">  Stock Maintenance</h1>
         <form onSubmit={handleSubmit} className="form-container">
           <div className="form-group">
             <label htmlFor="search-reagent">Search Reagent:</label>
@@ -239,7 +227,10 @@ function StockMaintenance() {
                 />
               </div>
               <div className="form-group">
-                <strong>Total Quantity: {calculateTotalQuantity()}</strong>
+                <strong>
+                  Total Quantity: {calculateTotalQuantity()}{" "}
+                  {selectedReagent.quantity_measure}
+                </strong>
               </div>
               <div className="form-actions">
                 <button type="submit">Update Stock</button>

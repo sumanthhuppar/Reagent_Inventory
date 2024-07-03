@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import moment from "moment";
 
 function AddReagent() {
   const [reagent, setReagent] = useState({
@@ -10,6 +11,7 @@ function AddReagent() {
     quantity_measure: "",
     source: "",
     expiry: "",
+    last_updated: moment().format("YYYY-MM-DD"), // Initialize last_updated with current date
   });
   const navigate = useNavigate();
 
@@ -50,12 +52,17 @@ function AddReagent() {
     e.preventDefault();
     if (!validateForm()) return;
 
+    const newReagent = {
+      ...reagent,
+      last_updated: moment().format("YYYY-MM-DD"), // Update last_updated before submission
+    };
+
     fetch("http://localhost:5000/reagents", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(reagent),
+      body: JSON.stringify(newReagent),
     })
       .then((response) => response.json())
       .then((data) => {
@@ -78,9 +85,6 @@ function AddReagent() {
       boxSizing: "border-box",
       maxWidth: "600px",
       margin: "0 auto",
-      border: "1px solid #ccc",
-      borderRadius: "8px",
-      boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
     },
     title: {
       textAlign: "center",
@@ -117,7 +121,7 @@ function AddReagent() {
 
   return (
     <div style={styles.container}>
-      <h1 style={styles.title}>Add New Reagent.</h1>
+      <h1 style={styles.title}>Add New Reagent</h1>
       <form onSubmit={handleSubmit} style={{ width: "100%" }}>
         <div style={styles.formGroup}>
           <input

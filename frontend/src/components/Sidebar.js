@@ -30,9 +30,7 @@ function Sidebar() {
       <NavLink to="/add" activeClassName="active">
         <i className="fas fa-plus"></i> ADD REAGENTS
       </NavLink>
-      <NavLink to="/expiring" activeClassName="active">
-        <i className="fas fa-exclamation-triangle"></i> EXPIRING SOON
-      </NavLink>
+    
       <NavLink to="/stock" activeClassName="active">
         <i className="fas fa-boxes"></i> STOCK CARE
       </NavLink>
