@@ -10,6 +10,7 @@ import moment from "moment";
 function ReagentList() {
   const [reagents, setReagents] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [sortCriteria, setSortCriteria] = useState("last_updated");
 
   useEffect(() => {
     fetch("http://localhost:5000/reagents")
@@ -63,6 +64,10 @@ function ReagentList() {
     setSearchTerm(event.target.value);
   };
 
+  const handleSort = (event) => {
+    setSortCriteria(event.target.value);
+  };
+
   const getDaysToExpire = (expiryDate) => {
     const expiry = moment(expiryDate);
     const today = moment();
@@ -70,9 +75,19 @@ function ReagentList() {
     return diff < 0 ? 0 : diff;
   };
 
-  const filteredReagents = reagents.filter((reagent) =>
-    reagent.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredReagents = reagents
+    .filter((reagent) =>
+      reagent.name.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .sort((a, b) => {
+      if (sortCriteria === "name") {
+        return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+      } else if (sortCriteria === "days_to_expire") {
+        return getDaysToExpire(a.expiry) - getDaysToExpire(b.expiry);
+      } else {
+        return moment(b.last_updated).diff(moment(a.last_updated));
+      }
+    });
 
   const styles = {
     header: {
@@ -102,12 +117,12 @@ function ReagentList() {
     },
     inputContainer: {
       display: "flex",
-      justifyContent: "center",
+      justifyContent: "space-between",
       alignItems: "center",
       marginBottom: "20px",
     },
     input: {
-      width: "40%",
+      width: "50%",
       padding: "8.5px",
       fontSize: "16px",
       borderRadius: "8px",
@@ -117,8 +132,8 @@ function ReagentList() {
     colorLabelContainer: {
       display: "flex",
       flexDirection: "column",
-      marginLeft: "20px",
       alignItems: "flex-start",
+      marginRight: "30px",
     },
     colorLabel: {
       display: "flex",
@@ -142,12 +157,31 @@ function ReagentList() {
     greenDot: {
       backgroundColor: "green",
     },
+    sortContainer: {
+      marginRight: "20px",
+      marginLeft: "30px",
+    },
+    sortSelect: {
+      width: "150px",
+      padding: "8.5px",
+      fontSize: "16px",
+      borderRadius: "8px",
+      border: "0.8px solid #388E3C",
+      boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+    },
   };
 
   return (
     <div>
-      <h1 style={styles.h1}>Reagents List</h1>
+      <h1 style={styles.h1}>Reagents List.</h1>
       <div style={styles.inputContainer}>
+        <div style={styles.sortContainer}>
+          <select style={styles.sortSelect} onChange={handleSort}>
+            <option value="last_updated">Sort by: Modify</option>
+            <option value="name">Sort by: Name</option>
+            <option value="days_to_expire">Sort by: Days to Expire</option>
+          </select>
+        </div>
         <input
           type="text"
           className="form-control"

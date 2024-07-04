@@ -107,12 +107,17 @@ function EditReagent() {
   };
 
   const handleSubmit = (e) => {
+    const updatedReagent = {
+      ...reagent,
+      last_updated: moment().format("DD-MM-YYYY"),
+    };
+
     fetch(`http://localhost:5000/reagents/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(reagent),
+      body: JSON.stringify(updatedReagent),
     })
       .then((response) => response.json())
       .then((data) => {
@@ -192,16 +197,6 @@ function EditReagent() {
             required
           />
         </div>
-        <div className="form-group">
-          <label htmlFor="last_updated">Last Updated:</label>
-          <input
-            type="text"
-            id="last_updated"
-            name="last_updated"
-            value={moment(reagent.last_updated, "DD-MM-YYYY").format("DD-MM-YYYY")}
-            readOnly
-          />
-        </div>
         <button type="submit">Save Changes</button>
       </form>
       {modalIsOpen && (
@@ -235,10 +230,15 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    justifyContent: "center",
-    minHeight: "100vh",
+    justifyContent: "flex-start",
+
+    maxHeight: "100vh",
+    overflow: "hidden", // Prevents scroll bar from appearing
+    paddingTop: "0px", // Adjusted to move form higher vertically
   },
   form: {
-    width: "300px",
+    width: "100%",
+    maxWidth: "400px",
+    margin: "0 auto",
   },
 };

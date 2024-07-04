@@ -29,9 +29,12 @@ function AddReagent() {
     }
 
     if (!/^[a-zA-Z]+-?\d*|\d+[a-zA-Z]+$/.test(quantity_measure)) {
-      toast.error("Measure must be non-negative or alphanumeric.", {
-        theme: "dark",
-      });
+      toast.error(
+        "The measure must include letters, and may include numbers along with letters, but numbers alone are not allowed.",
+        {
+          theme: "dark",
+        }
+      );
       return false;
     }
 
