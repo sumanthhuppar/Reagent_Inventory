@@ -353,18 +353,4 @@ button[type="submit"]:hover {
   background: #a3e635; /* Light green background */
   color: #004d00; /* Dark green text */
 }
-/* CSS for custom scroll bar */
-/* CSS for custom scroll bar */
-::-webkit-scrollbar {
-  width: 10px; /* width of the scrollbar */
-}
-
-::-webkit-scrollbar-track {
-  background: rgb(181, 181, 181);
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: #141414; /* parrot green color of the scroll thumb */
-  border-radius: 4px; /* roundness of the thumb */
-}
 

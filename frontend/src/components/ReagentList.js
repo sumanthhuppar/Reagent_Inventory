@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import './ReagentList.css';
 import DeleteConfirmation from "./DeleteConfirmation";
 import moment from "moment";
 
@@ -90,6 +91,12 @@ function ReagentList() {
     });
 
   const styles = {
+    container: {
+      maxHeight: "100vh",
+      display: "flex",
+      flexDirection: "column",
+      overflow: "hidden",
+    },
     header: {
       color: "darkgreen",
     },
@@ -98,33 +105,13 @@ function ReagentList() {
       color: "#32CD32", // Darker shade of green
       marginBottom: "20px",
     },
-    table: {
-      width: "100%",
-      borderCollapse: "collapse",
-    },
-    th: {
-      color: "white",
-      backgroundColor: "#388E3C",
-      border: "0.8px solid white",
-      padding: "10px",
-      textAlign: "left",
-      wordBreak: "keep-all",
-    },
-    // Inside styles object
-    td: {
-      padding: "10px",
-      borderBottom: "1px solid #ddd",
-      wordBreak: "break-word",
-      height: "auto", // Allow height to increase for long content
-      verticalAlign: "top", // Ensure content starts from the top
-      maxWidth: "200px", // Adjust as needed for each column
-    },
-
     inputContainer: {
       display: "flex",
       justifyContent: "space-between",
       alignItems: "center",
       marginBottom: "20px",
+      padding: "0 20px",
+      flexShrink: 0,
     },
     input: {
       width: "50%",
@@ -174,11 +161,38 @@ function ReagentList() {
       border: "0.8px solid #388E3C",
       boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
     },
+    tableContainer: {
+      overflowY: "auto",
+      flexGrow: 1,
+    },
+    table: {
+      width: "100%",
+      borderCollapse: "collapse",
+    },
+    th: {
+      color: "white",
+      backgroundColor: "#388E3C",
+      border: "0.8px solid white",
+      padding: "10px",
+      textAlign: "left",
+      wordBreak: "keep-all",
+      position: "sticky",
+      top: -1,
+      zIndex: 1,
+    },
+    td: {
+      padding: "10px",
+      borderBottom: "1px solid #ddd",
+      wordBreak: "break-word",
+      height: "auto", // Allow height to increase for long content
+      verticalAlign: "top", // Ensure content starts from the top
+      maxWidth: "200px", // Adjust as needed for each column
+    },
   };
 
   return (
-    <div>
-      <h1 style={styles.h1}>Reagents List.</h1>
+    <div style={styles.container}>
+      <h1 style={styles.h1}>Reagents List</h1>
       <div style={styles.inputContainer}>
         <div style={styles.sortContainer}>
           <select style={styles.sortSelect} onChange={handleSort}>
@@ -210,104 +224,106 @@ function ReagentList() {
           </div>
         </div>
       </div>
-      <table style={styles.table}>
-        <thead>
-          <tr>
-            <th style={{ ...styles.th, width: "30%" }}>Name</th>
-            <th style={{ ...styles.th, width: "10%" }}>Quantity</th>
-            <th style={{ ...styles.th, width: "10%" }}>Quantity Measure</th>
-            <th style={styles.th}>Source</th>
-            <th style={styles.th}>Expiry</th>
-            <th style={styles.th}>Days to Expire</th>
-            <th style={styles.th}>Last Updated</th>
-            <th style={styles.th}>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredReagents.map((reagent, index) => {
-            const daysToExpire = getDaysToExpire(reagent.expiry);
-            const textColor =
-              daysToExpire === 0
-                ? "red"
-                : daysToExpire < 30
-                ? "orange"
-                : "green";
-            const backgroundColor = index % 2 === 0 ? "#f9f9f9" : "#e0e0e0";
-            const formattedExpiry = moment(reagent.expiry).format("DD-MM-YYYY");
-            const formattedLastUpdated = moment(reagent.last_updated).format(
-              "DD-MM-YYYY"
-            );
-            return (
-              <tr
-                key={reagent.id}
-                style={{ backgroundColor, color: textColor }}
-              >
-                <td
-                  style={{
-                    ...styles.td,
-                    maxWidth: "30%",
-                    whiteSpace: "normal",
-                  }}
+      <div style={styles.tableContainer}>
+        <table style={styles.table}>
+          <thead>
+            <tr>
+              <th style={{ ...styles.th, width: "30%" }}>Name</th>
+              <th style={{ ...styles.th, width: "10%" }}>Quantity</th>
+              <th style={{ ...styles.th, width: "10%" }}>Quantity Measure</th>
+              <th style={styles.th}>Source</th>
+              <th style={styles.th}>Expiry</th>
+              <th style={styles.th}>Days to Expire</th>
+              <th style={styles.th}>Last Updated</th>
+              <th style={styles.th}>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredReagents.map((reagent, index) => {
+              const daysToExpire = getDaysToExpire(reagent.expiry);
+              const textColor =
+                daysToExpire === 0
+                  ? "red"
+                  : daysToExpire < 30
+                  ? "orange"
+                  : "green";
+              const backgroundColor = index % 2 === 0 ? "#f9f9f9" : "#e0e0e0";
+              const formattedExpiry = moment(reagent.expiry).format("DD-MM-YYYY");
+              const formattedLastUpdated = moment(reagent.last_updated).format(
+                "DD-MM-YYYY"
+              );
+              return (
+                <tr
+                  key={reagent.id}
+                  style={{ backgroundColor, color: textColor }}
                 >
-                  {reagent.name}
-                </td>
-                <td style={{ ...styles.td, width: "10%" }}>
-                  {reagent.quantity}
-                </td>
-                <td style={{ ...styles.td, width: "10%" }}>
-                  {reagent.quantity_measure}
-                </td>
-                <td style={styles.td}>{reagent.source}</td>
-                <td style={styles.td}>{formattedExpiry}</td>
-                <td style={styles.td}>{daysToExpire}</td>
-                <td style={styles.td}>{formattedLastUpdated}</td>
-                <td
-                  style={{
-                    ...styles.td,
-                    verticalAlign: "middle",
-                    textAlign: "center",
-                  }}
-                >
-                  <Link
-                    to={`/edit-reagent/${reagent.id}`}
-                    style={{ marginRight: "10px" }}
-                  >
-                    <FontAwesomeIcon
-                      icon={faEdit}
-                      title="Edit"
-                      style={{
-                        width: "25px",
-                        height: "20px",
-                        marginLeft: "1px",
-                        marginRight: "7px",
-                      }}
-                    />
-                  </Link>
-                  <button
+                  <td
                     style={{
-                      border: "none",
-                      background: "none",
-                      padding: 0,
-                      cursor: "pointer",
+                      ...styles.td,
+                      maxWidth: "30%",
+                      whiteSpace: "normal",
                     }}
-                    onClick={() => handleDelete(reagent.id)}
                   >
-                    <lord-icon
-                      src="https://cdn.lordicon.com/skkahier.json"
-                      trigger="hover"
-                      colors="primary:#c71f16"
-                      style={{ width: "28px", height: "25px" }}
-                    ></lord-icon>
-                  </button>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+                    {reagent.name}
+                  </td>
+                  <td style={{ ...styles.td, width: "10%" }}>
+                    {reagent.quantity}
+                  </td>
+                 
+                  <td style={{ ...styles.td, width: "10%" }}>
+                    {reagent.quantity_measure}
+                  </td>
+                  <td style={styles.td}>{reagent.source}</td>
+                  <td style={styles.td}>{formattedExpiry}</td>
+                  <td style={styles.td}>{daysToExpire}</td>
+                  <td style={styles.td}>{formattedLastUpdated}</td>
+                  <td
+                    style={{
+                      ...styles.td,
+                      verticalAlign: "middle",
+                      textAlign: "center",
+                    }}
+                  >
+                    <Link
+                      to={`/edit-reagent/${reagent.id}`}
+                      style={{ marginRight: "10px" }}
+                    >
+                      <FontAwesomeIcon
+                        icon={faEdit}
+                        title="Edit"
+                        style={{
+                          width: "25px",
+                          height: "20px",
+                          marginLeft: "1px",
+                          marginRight: "7px",
+                        }}
+                      />
+                    </Link>
+                    <button
+                      style={{
+                        border: "none",
+                        background: "none",
+                        padding: 0,
+                        cursor: "pointer",
+                      }}
+                      onClick={() => handleDelete(reagent.id)}
+                    >
+                      <lord-icon
+                        src="https://cdn.lordicon.com/skkahier.json"
+                        trigger="hover"
+                        colors="primary:#c71f16"
+                        style={{ width: "28px", height: "25px" }}
+                      ></lord-icon>
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
       <ToastContainer />
     </div>
   );
 }
-
 export default ReagentList;

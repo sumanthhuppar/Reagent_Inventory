@@ -1,0 +1,38 @@
+body {
+    overflow: hidden; /* Hide the scrollbar of the body */
+  }
+  
+  .reagent-list {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+  
+  .reagent-list h1 {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: white;
+    z-index: 1000;
+  }
+  
+  .reagent-list .tableContainer {
+    margin-top: 100px; /* Adjust based on the height of the fixed header */
+    height: calc(100vh - 150px); /* Adjust based on the total height of other fixed elements */
+    overflow-y: auto;
+    padding-top: 10px;
+  }
+  ::-webkit-scrollbar {
+    width: 10px; /* Width of the scrollbar */
+    height: 6px; /* Height of the scrollbar */
+  }
+  
+  /* Styling the track (background of the scrollbar) */
+  ::-webkit-scrollbar-track {
+    background: gainsboro;
+  }
+  
+  /* Styling the thumb (the draggable part of the scrollbar) */
+  ::-webkit-scrollbar-thumb {
+    background-color: black; /* Color of the scrollbar thumb */
+  }
