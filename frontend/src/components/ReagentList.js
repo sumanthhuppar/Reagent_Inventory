@@ -10,6 +10,7 @@ import moment from "moment";
 function ReagentList() {
   const [reagents, setReagents] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [sortCriteria, setSortCriteria] = useState("last_updated");
 
   useEffect(() => {
     fetch("http://localhost:5000/reagents")
@@ -63,6 +64,10 @@ function ReagentList() {
     setSearchTerm(event.target.value);
   };
 
+  const handleSort = (event) => {
+    setSortCriteria(event.target.value);
+  };
+
   const getDaysToExpire = (expiryDate) => {
     const expiry = moment(expiryDate);
     const today = moment();
@@ -70,9 +75,19 @@ function ReagentList() {
     return diff < 0 ? 0 : diff;
   };
 
-  const filteredReagents = reagents.filter((reagent) =>
-    reagent.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredReagents = reagents
+    .filter((reagent) =>
+      reagent.name.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .sort((a, b) => {
+      if (sortCriteria === "name") {
+        return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+      } else if (sortCriteria === "days_to_expire") {
+        return getDaysToExpire(a.expiry) - getDaysToExpire(b.expiry);
+      } else {
+        return moment(b.last_updated).diff(moment(a.last_updated));
+      }
+    });
 
   const styles = {
     header: {
@@ -80,7 +95,7 @@ function ReagentList() {
     },
     h1: {
       textAlign: "center",
-      color: "#4CAF50",
+      color: "#32CD32", // Darker shade of green
       marginBottom: "20px",
     },
     table: {
@@ -89,21 +104,70 @@ function ReagentList() {
     },
     th: {
       color: "white",
-      backgroundColor: "#388E3C", // medium green
+      backgroundColor: "#388E3C",
       border: "0.8px solid white",
       padding: "10px",
       textAlign: "left",
+      wordBreak: "keep-all",
     },
+    // Inside styles object
     td: {
       padding: "10px",
       borderBottom: "1px solid #ddd",
+      wordBreak: "break-word",
+      height: "auto", // Allow height to increase for long content
+      verticalAlign: "top", // Ensure content starts from the top
+      maxWidth: "200px", // Adjust as needed for each column
     },
+
     inputContainer: {
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
       marginBottom: "20px",
-      textAlign: "center",
     },
     input: {
-      width: "40%",
+      width: "50%",
+      padding: "8.5px",
+      fontSize: "16px",
+      borderRadius: "8px",
+      border: "0.8px solid #388E3C",
+      boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+    },
+    colorLabelContainer: {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "flex-start",
+      marginRight: "30px",
+    },
+    colorLabel: {
+      display: "flex",
+      alignItems: "center",
+      marginBottom: "5px",
+      fontSize: "14px",
+    },
+    colorDot: {
+      height: "10px",
+      width: "10px",
+      borderRadius: "50%",
+      display: "inline-block",
+      marginRight: "5px",
+    },
+    redDot: {
+      backgroundColor: "red",
+    },
+    orangeDot: {
+      backgroundColor: "orange",
+    },
+    greenDot: {
+      backgroundColor: "green",
+    },
+    sortContainer: {
+      marginRight: "20px",
+      marginLeft: "30px",
+    },
+    sortSelect: {
+      width: "150px",
       padding: "8.5px",
       fontSize: "16px",
       borderRadius: "8px",
@@ -114,8 +178,15 @@ function ReagentList() {
 
   return (
     <div>
-      <h1 style={styles.h1}>Reagents List</h1>
-      <div className="mb-3" style={styles.inputContainer}>
+      <h1 style={styles.h1}>Reagents List.</h1>
+      <div style={styles.inputContainer}>
+        <div style={styles.sortContainer}>
+          <select style={styles.sortSelect} onChange={handleSort}>
+            <option value="last_updated">Sort by: Modify</option>
+            <option value="name">Sort by: Name</option>
+            <option value="days_to_expire">Sort by: Days to Expire</option>
+          </select>
+        </div>
         <input
           type="text"
           className="form-control"
@@ -124,13 +195,27 @@ function ReagentList() {
           onChange={handleSearch}
           style={styles.input}
         />
+        <div style={styles.colorLabelContainer}>
+          <div style={styles.colorLabel}>
+            <span style={{ ...styles.colorDot, ...styles.greenDot }}></span> ≥
+            30 days
+          </div>
+          <div style={styles.colorLabel}>
+            <span style={{ ...styles.colorDot, ...styles.orangeDot }}></span>{" "}
+            &lt; 30 days
+          </div>
+          <div style={styles.colorLabel}>
+            <span style={{ ...styles.colorDot, ...styles.redDot }}></span> 0
+            days
+          </div>
+        </div>
       </div>
       <table style={styles.table}>
         <thead>
           <tr>
-            <th style={styles.th}>Name</th>
-            <th style={styles.th}>Quantity</th>
-            <th style={styles.th}>Quantity Measure</th>
+            <th style={{ ...styles.th, width: "30%" }}>Name</th>
+            <th style={{ ...styles.th, width: "10%" }}>Quantity</th>
+            <th style={{ ...styles.th, width: "10%" }}>Quantity Measure</th>
             <th style={styles.th}>Source</th>
             <th style={styles.th}>Expiry</th>
             <th style={styles.th}>Days to Expire</th>
@@ -157,9 +242,21 @@ function ReagentList() {
                 key={reagent.id}
                 style={{ backgroundColor, color: textColor }}
               >
-                <td style={styles.td}>{reagent.name}</td>
-                <td style={styles.td}>{reagent.quantity}</td>
-                <td style={styles.td}>{reagent.quantity_measure}</td>
+                <td
+                  style={{
+                    ...styles.td,
+                    maxWidth: "30%",
+                    whiteSpace: "normal",
+                  }}
+                >
+                  {reagent.name}
+                </td>
+                <td style={{ ...styles.td, width: "10%" }}>
+                  {reagent.quantity}
+                </td>
+                <td style={{ ...styles.td, width: "10%" }}>
+                  {reagent.quantity_measure}
+                </td>
                 <td style={styles.td}>{reagent.source}</td>
                 <td style={styles.td}>{formattedExpiry}</td>
                 <td style={styles.td}>{daysToExpire}</td>

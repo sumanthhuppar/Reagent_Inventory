@@ -58,7 +58,7 @@ function EditReagent() {
       .then((data) => {
         setReagent({
           ...data,
-          last_updated: moment(data.last_updated).format("DD-MM-YYYY"),
+          last_updated: moment(data.last_updated).format("YYYY-MM-DD"), // Adjusted date format
         });
       })
       .catch((error) => console.error("Error fetching reagent:", error));
@@ -87,8 +87,8 @@ function EditReagent() {
       return;
     }
 
-    if (!/^(?=.*[a-zA-Z])[a-zA-Z0-9-]*$/.test(reagent.source)) {
-      toast.error("Source must include characters and can include numbers.", {
+    if (!/^[a-zA-Z]*$/.test(reagent.source)) {
+      toast.error("Source can include characters, numbers, and hyphens.", {
         theme: "dark",
       });
       return;
@@ -107,12 +107,17 @@ function EditReagent() {
   };
 
   const handleSubmit = (e) => {
+    const updatedReagent = {
+      ...reagent,
+      last_updated: moment().format("YYYY-MM-DD"), // Adjusted date format
+    };
+
     fetch(`http://localhost:5000/reagents/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(reagent),
+      body: JSON.stringify(updatedReagent),
     })
       .then((response) => response.json())
       .then((data) => {
@@ -130,7 +135,7 @@ function EditReagent() {
 
   return (
     <div className="edit-reagent-container" style={styles.container}>
-      <h1>Edit Reagent</h1>
+      <h1 style={{ color: "#32CD32" }}>Edit Reagent</h1>
       <form
         className="edit-reagent-form"
         onSubmit={validateAndSubmit}
@@ -192,16 +197,6 @@ function EditReagent() {
             required
           />
         </div>
-        <div className="form-group">
-          <label htmlFor="last_updated">Last Updated:</label>
-          <input
-            type="text"
-            id="last_updated"
-            name="last_updated"
-            value={moment(reagent.last_updated, "DD-MM-YYYY").format("DD-MM-YYYY")}
-            readOnly
-          />
-        </div>
         <button type="submit">Save Changes</button>
       </form>
       {modalIsOpen && (
@@ -235,10 +230,14 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    justifyContent: "center",
-    minHeight: "100vh",
+    justifyContent: "flex-start",
+    maxHeight: "100vh",
+    overflow: "hidden", // Prevents scroll bar from appearing
+    paddingTop: "0px", // Adjusted to move form higher vertically
   },
   form: {
-    width: "300px",
+    width: "100%",
+    maxWidth: "400px",
+    margin: "0 auto",
   },
 };

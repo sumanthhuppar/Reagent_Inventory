@@ -29,9 +29,12 @@ function AddReagent() {
     }
 
     if (!/^[a-zA-Z]+-?\d*|\d+[a-zA-Z]+$/.test(quantity_measure)) {
-      toast.error("Measure must be non-negative or alphanumeric.", {
-        theme: "dark",
-      });
+      toast.error(
+        "The measure must include letters, and may include numbers along with letters, but numbers alone are not allowed.",
+        {
+          theme: "dark",
+        }
+      );
       return false;
     }
 
@@ -89,6 +92,7 @@ function AddReagent() {
     title: {
       textAlign: "center",
       marginBottom: "15px",
+      color: "#32CD32",
     },
     formGroup: {
       marginBottom: "10px",
@@ -121,7 +125,7 @@ function AddReagent() {
 
   return (
     <div style={styles.container}>
-      <h1 style={styles.title}>Add New Reagent</h1>
+      <h1 style={styles.title}>Add New Reagent.</h1>
       <form onSubmit={handleSubmit} style={{ width: "100%" }}>
         <div style={styles.formGroup}>
           <input

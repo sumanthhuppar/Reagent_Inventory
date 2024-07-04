@@ -12,7 +12,7 @@ function StockMaintenance() {
   const [quantityAdded, setQuantityAdded] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
 
-  useEffect(() => {
+  const fetchReagents = () => {
     fetch("http://localhost:5000/reagents")
       .then((response) => {
         if (!response.ok) {
@@ -22,8 +22,14 @@ function StockMaintenance() {
       })
       .then((data) => setReagents(data))
       .catch((error) =>
-        toast.error("Failed to fetch reagents: " + error.message)
+        toast.error("Failed to fetch reagents: " + error.message, {
+          theme: "dark",
+        })
       );
+  };
+
+  useEffect(() => {
+    fetchReagents();
   }, []);
 
   const handleReagentSelect = (e) => {
@@ -60,6 +66,16 @@ function StockMaintenance() {
     e.preventDefault();
     if (!selectedReagent) return;
 
+    const removedExpiry = parseFloat(quantityRemoved.expiry) || 0;
+    const removedExperiment = parseFloat(quantityRemoved.experiment) || 0;
+
+    if (removedExpiry + removedExperiment > selectedReagent.quantity) {
+      toast.error("Error: Quantity removed cannot exceed total quantity.", {
+        theme: "dark",
+      });
+      return;
+    }
+
     const updatedQuantity = calculateTotalQuantity();
 
     fetch(`http://localhost:5000/reagents/${selectedReagent.id}`, {
@@ -77,9 +93,12 @@ function StockMaintenance() {
       })
       .then((data) => {
         setReagents(reagents.map((r) => (r.id === data.id ? data : r)));
-        setSelectedReagent(data);
+        setSelectedReagent(null);
         setQuantityRemoved({ expiry: "", experiment: "" });
         setQuantityAdded("");
+        setSearchTerm("");
+        document.getElementById("reagent-select").value = ""; // Reset select field
+        fetchReagents();
         toast.success("Stock updated successfully.", {
           position: "top-right",
           autoClose: 4000,
@@ -92,7 +111,9 @@ function StockMaintenance() {
         });
       })
       .catch((error) => {
-        toast.error("Error updating reagent: " + error.message);
+        toast.error("Error updating reagent: " + error.message, {
+          theme: "dark",
+        });
       });
   };
 
@@ -158,15 +179,25 @@ function StockMaintenance() {
           .form-header {
             text-align: center;
             margin-bottom: 8px;
+            color:#32CD32;
           }
           .form-group strong {
             margin-top: 4px;
+          }
+          .note {
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: #555;
+          }
+          .warning {
+            color: #d17b00;
+            font-weight: bold;
           }
         `}
       </style>
       <ToastContainer />
       <div className="form-wrapper">
-        <h1 className="form-header">  Stock Maintenance</h1>
+        <h1 className="form-header">Stock Maintenance.</h1>
         <form onSubmit={handleSubmit} className="form-container">
           <div className="form-group">
             <label htmlFor="search-reagent">Search Reagent:</label>
@@ -191,7 +222,11 @@ function StockMaintenance() {
           </div>
           {selectedReagent && (
             <>
-              <div className="form-group"></div>
+              <div className="form-group note warning">
+                Note: If the expiry date of new stock is the same as existing
+                stock, update the existing stock. If different, add as a new
+                reagent.
+              </div>
               <div className="form-group">
                 <label htmlFor="removed-expiry">
                   Quantity Removed (Expiry):
