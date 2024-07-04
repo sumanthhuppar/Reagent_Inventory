@@ -89,18 +89,22 @@ function ReagentList() {
     },
     th: {
       color: "white",
-      backgroundColor: "#388E3C", // medium green
+      backgroundColor: "#388E3C",
       border: "0.8px solid white",
       padding: "10px",
       textAlign: "left",
+      wordBreak: "keep-all",
     },
     td: {
       padding: "10px",
       borderBottom: "1px solid #ddd",
+      wordBreak: "break-word",
     },
     inputContainer: {
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
       marginBottom: "20px",
-      textAlign: "center",
     },
     input: {
       width: "40%",
@@ -110,12 +114,40 @@ function ReagentList() {
       border: "0.8px solid #388E3C",
       boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
     },
+    colorLabelContainer: {
+      display: "flex",
+      flexDirection: "column",
+      marginLeft: "20px",
+      alignItems: "flex-start",
+    },
+    colorLabel: {
+      display: "flex",
+      alignItems: "center",
+      marginBottom: "5px",
+      fontSize: "14px",
+    },
+    colorDot: {
+      height: "10px",
+      width: "10px",
+      borderRadius: "50%",
+      display: "inline-block",
+      marginRight: "5px",
+    },
+    redDot: {
+      backgroundColor: "red",
+    },
+    orangeDot: {
+      backgroundColor: "orange",
+    },
+    greenDot: {
+      backgroundColor: "green",
+    },
   };
 
   return (
     <div>
       <h1 style={styles.h1}>Reagents List</h1>
-      <div className="mb-3" style={styles.inputContainer}>
+      <div style={styles.inputContainer}>
         <input
           type="text"
           className="form-control"
@@ -124,13 +156,27 @@ function ReagentList() {
           onChange={handleSearch}
           style={styles.input}
         />
+        <div style={styles.colorLabelContainer}>
+          <div style={styles.colorLabel}>
+            <span style={{ ...styles.colorDot, ...styles.greenDot }}></span> ≥
+            30 days
+          </div>
+          <div style={styles.colorLabel}>
+            <span style={{ ...styles.colorDot, ...styles.orangeDot }}></span>{" "}
+            &lt; 30 days
+          </div>
+          <div style={styles.colorLabel}>
+            <span style={{ ...styles.colorDot, ...styles.redDot }}></span> 0
+            days
+          </div>
+        </div>
       </div>
       <table style={styles.table}>
         <thead>
           <tr>
-            <th style={styles.th}>Name</th>
-            <th style={styles.th}>Quantity</th>
-            <th style={styles.th}>Quantity Measure</th>
+            <th style={{ ...styles.th, width: "30%" }}>Name</th>
+            <th style={{ ...styles.th, width: "10%" }}>Quantity</th>
+            <th style={{ ...styles.th, width: "10%" }}>Quantity Measure</th>
             <th style={styles.th}>Source</th>
             <th style={styles.th}>Expiry</th>
             <th style={styles.th}>Days to Expire</th>
@@ -157,9 +203,21 @@ function ReagentList() {
                 key={reagent.id}
                 style={{ backgroundColor, color: textColor }}
               >
-                <td style={styles.td}>{reagent.name}</td>
-                <td style={styles.td}>{reagent.quantity}</td>
-                <td style={styles.td}>{reagent.quantity_measure}</td>
+                <td
+                  style={{
+                    ...styles.td,
+                    maxWidth: "30%",
+                    whiteSpace: "normal",
+                  }}
+                >
+                  {reagent.name}
+                </td>
+                <td style={{ ...styles.td, width: "10%" }}>
+                  {reagent.quantity}
+                </td>
+                <td style={{ ...styles.td, width: "10%" }}>
+                  {reagent.quantity_measure}
+                </td>
                 <td style={styles.td}>{reagent.source}</td>
                 <td style={styles.td}>{formattedExpiry}</td>
                 <td style={styles.td}>{daysToExpire}</td>
