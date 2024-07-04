@@ -95,7 +95,7 @@ function ReagentList() {
     },
     h1: {
       textAlign: "center",
-      color: "#4CAF50",
+      color: "#32CD32", // Darker shade of green
       marginBottom: "20px",
     },
     table: {

@@ -179,6 +179,7 @@ function StockMaintenance() {
           .form-header {
             text-align: center;
             margin-bottom: 8px;
+            color:#32CD32;
           }
           .form-group strong {
             margin-top: 4px;
@@ -196,7 +197,7 @@ function StockMaintenance() {
       </style>
       <ToastContainer />
       <div className="form-wrapper">
-        <h1 className="form-header">Stock Maintenance</h1>
+        <h1 className="form-header">Stock Maintenance.</h1>
         <form onSubmit={handleSubmit} className="form-container">
           <div className="form-group">
             <label htmlFor="search-reagent">Search Reagent:</label>

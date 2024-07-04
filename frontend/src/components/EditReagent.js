@@ -135,7 +135,7 @@ function EditReagent() {
 
   return (
     <div className="edit-reagent-container" style={styles.container}>
-      <h1>Edit Reagent</h1>
+      <h1 style={{ color: "#32CD32" }}>Edit Reagents</h1>
       <form
         className="edit-reagent-form"
         onSubmit={validateAndSubmit}
