@@ -110,11 +110,16 @@ function ReagentList() {
       textAlign: "left",
       wordBreak: "keep-all",
     },
+    // Inside styles object
     td: {
       padding: "10px",
       borderBottom: "1px solid #ddd",
       wordBreak: "break-word",
+      height: "auto", // Allow height to increase for long content
+      verticalAlign: "top", // Ensure content starts from the top
+      maxWidth: "200px", // Adjust as needed for each column
     },
+
     inputContainer: {
       display: "flex",
       justifyContent: "space-between",

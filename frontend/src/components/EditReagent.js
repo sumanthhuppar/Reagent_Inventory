@@ -58,7 +58,7 @@ function EditReagent() {
       .then((data) => {
         setReagent({
           ...data,
-          last_updated: moment(data.last_updated).format("DD-MM-YYYY"),
+          last_updated: moment(data.last_updated).format("YYYY-MM-DD"), // Adjusted date format
         });
       })
       .catch((error) => console.error("Error fetching reagent:", error));
@@ -87,8 +87,8 @@ function EditReagent() {
       return;
     }
 
-    if (!/^(?=.*[a-zA-Z])[a-zA-Z0-9-]*$/.test(reagent.source)) {
-      toast.error("Source must include characters and can include numbers.", {
+    if (!/^[a-zA-Z]*$/.test(reagent.source)) {
+      toast.error("Source can include characters, numbers, and hyphens.", {
         theme: "dark",
       });
       return;
@@ -109,7 +109,7 @@ function EditReagent() {
   const handleSubmit = (e) => {
     const updatedReagent = {
       ...reagent,
-      last_updated: moment().format("DD-MM-YYYY"),
+      last_updated: moment().format("YYYY-MM-DD"), // Adjusted date format
     };
 
     fetch(`http://localhost:5000/reagents/${id}`, {
@@ -135,7 +135,7 @@ function EditReagent() {
 
   return (
     <div className="edit-reagent-container" style={styles.container}>
-      <h1 style={{ color: "#32CD32" }}>Edit Reagents</h1>
+      <h1 style={{ color: "#32CD32" }}>Edit Reagent</h1>
       <form
         className="edit-reagent-form"
         onSubmit={validateAndSubmit}
@@ -231,7 +231,6 @@ const styles = {
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "flex-start",
-
     maxHeight: "100vh",
     overflow: "hidden", // Prevents scroll bar from appearing
     paddingTop: "0px", // Adjusted to move form higher vertically
