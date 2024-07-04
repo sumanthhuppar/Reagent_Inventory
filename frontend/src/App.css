@@ -360,11 +360,11 @@ button[type="submit"]:hover {
 }
 
 ::-webkit-scrollbar-track {
-  background: rgb(81, 0, 106);
+  background: rgb(181, 181, 181);
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #2acb30; /* parrot green color of the scroll thumb */
+  background-color: #141414; /* parrot green color of the scroll thumb */
   border-radius: 4px; /* roundness of the thumb */
 }
 
