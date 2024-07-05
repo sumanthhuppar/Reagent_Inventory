@@ -192,7 +192,7 @@ function ReagentList() {
 
   return (
     <div style={styles.container}>
-      <h1 style={styles.h1}>Reagents List</h1>
+      <h1 style={styles.h1}>Reagents List.</h1>
       <div style={styles.inputContainer}>
         <div style={styles.sortContainer}>
           <select style={styles.sortSelect} onChange={handleSort}>
