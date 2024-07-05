@@ -134,9 +134,17 @@ function StockMaintenance() {
             box-sizing: border-box;
             overflow-y: hidden;
           }
-          
-          .form-container {
-            width: 100%;
+           
+          .form-container { 
+          width: 350px;
+          min-width: 350px;
+          max-width: 350px;
+          background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent white background */
+          padding: 20px;
+          border-radius: 10px;
+          box-shadow: 0 0 15px rgba(0, 100, 0, 0.3); /* Darker green-tinted box shadow */
+          border: 1px solid rgba(0, 255, 0, 0.4); /* Green tinted border */
+          backdrop-filter: blur(10px);
           }
           .form-group {
             margin-bottom: 8px;
@@ -197,7 +205,7 @@ function StockMaintenance() {
       </style>
       <ToastContainer />
       <div className="form-wrapper">
-        <h1 className="form-header">Stock Maintenance.</h1>
+        <h1 className="form-header">Stock Care.</h1>
         <form onSubmit={handleSubmit} className="form-container">
           <div className="form-group">
             <label htmlFor="search-reagent">Search Reagent:</label>

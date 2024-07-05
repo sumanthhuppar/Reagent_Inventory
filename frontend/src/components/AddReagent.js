@@ -121,12 +121,23 @@ function AddReagent() {
       cursor: "pointer",
       marginTop: "10px",
     },
+    form_container_add: {
+      width: "350px",
+      minWidth: "350px",
+      maxWidth: "350px",
+      backgroundColor: "rgba(255, 255, 255, 0.5)", // Semi-transparent white background
+      padding: "20px",
+      borderRadius: "10px",
+      boxShadow: "0 0 15px rgba(0, 100, 0, 0.3)", // Darker green-tinted box shadow
+      border: "1px solid rgba(0, 255, 0, 0.4)", // Green tinted border
+      backdropFilter: "blur(10px)", // Blur effect (experimental)
+    },
   };
 
   return (
     <div style={styles.container}>
       <h1 style={styles.title}>Add New Reagent.</h1>
-      <form onSubmit={handleSubmit} style={{ width: "100%" }}>
+      <form onSubmit={handleSubmit} style={styles.form_container_add}>
         <div style={styles.formGroup}>
           <input
             type="text"
