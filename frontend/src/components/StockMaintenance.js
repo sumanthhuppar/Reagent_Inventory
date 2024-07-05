@@ -41,11 +41,17 @@ function StockMaintenance() {
   };
 
   const handleQuantityChange = (e, type) => {
-    const value = e.target.value;
+    const value = parseFloat(e.target.value);
+    if (value < 0) {
+      toast.error("Quantity cannot be negative", {
+        theme: "dark",
+      });
+      return;
+    }
     if (type === "added") {
-      setQuantityAdded(value);
+      setQuantityAdded(e.target.value);
     } else {
-      setQuantityRemoved((prev) => ({ ...prev, [type]: value }));
+      setQuantityRemoved((prev) => ({ ...prev, [type]: e.target.value }));
     }
   };
 

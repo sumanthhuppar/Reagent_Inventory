@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "./ReagentList.css";
+import './ReagentList.css';
 import DeleteConfirmation from "./DeleteConfirmation";
 import moment from "moment";
 
@@ -192,7 +192,7 @@ function ReagentList() {
 
   return (
     <div style={styles.container}>
-      <h1 style={styles.h1}>Reagents List.</h1>
+      <h1 style={styles.h1}>Reagents List</h1>
       <div style={styles.inputContainer}>
         <div style={styles.sortContainer}>
           <select style={styles.sortSelect} onChange={handleSort}>
@@ -224,7 +224,7 @@ function ReagentList() {
           </div>
         </div>
       </div>
-      <div style={styles.tableContainer}>
+      <div className="tableContainer" style={styles.tableContainer}>
         <table style={styles.table}>
           <thead>
             <tr>
@@ -248,9 +248,7 @@ function ReagentList() {
                   ? "orange"
                   : "green";
               const backgroundColor = index % 2 === 0 ? "#f9f9f9" : "#e0e0e0";
-              const formattedExpiry = moment(reagent.expiry).format(
-                "DD-MM-YYYY"
-              );
+              const formattedExpiry = moment(reagent.expiry).format("DD-MM-YYYY");
               const formattedLastUpdated = moment(reagent.last_updated).format(
                 "DD-MM-YYYY"
               );
@@ -271,7 +269,7 @@ function ReagentList() {
                   <td style={{ ...styles.td, width: "10%" }}>
                     {reagent.quantity}
                   </td>
-
+                 
                   <td style={{ ...styles.td, width: "10%" }}>
                     {reagent.quantity_measure}
                   </td>
