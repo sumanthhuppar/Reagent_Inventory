@@ -135,9 +135,10 @@ function EditReagent() {
 
   return (
     <div className="edit-reagent-container" style={styles.container}>
-      <h1 style={{ color: "#32CD32" }}>Edit Reagent</h1>
+      <h1 style={{ color: "#32CD32" }}>Edit Reagents.</h1>
       <form
         className="edit-reagent-form"
+        ID="edit_reagent_form"
         onSubmit={validateAndSubmit}
         style={styles.form}
       >
@@ -239,5 +240,12 @@ const styles = {
     width: "100%",
     maxWidth: "400px",
     margin: "0 auto",
+    minWidth: "400px",
+    backgroundColor: "rgba(255, 255, 255, 0.5)", // Semi-transparent white background
+    padding: "40px",
+    borderRadius: "10px",
+    boxShadow: "0 0 10px rgba(0, 100, 0, 0.3)", // Darker green-tinted box shadow
+    border: "1px solid rgba(0, 255, 0, 0.4)", // Green tinted border
+    backdropFilter: "blur(10px)",
   },
 };
