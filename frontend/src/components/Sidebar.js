@@ -7,7 +7,7 @@ function Sidebar() {
       <h2
         style={{
           fontSize: "32px",
-          color: "#7ed957", // Lighter shade of green
+          color: "#7ed959", // Lighter shade of green
         }}
       >
         ReAgent <span> </span>
@@ -15,9 +15,9 @@ function Sidebar() {
           style={{
             color: "orange",
             animation: "glow 1s infinite",
-            fontSize: "36px", // Increase text size
+            fontSize: "43px", // Increase text size
             fontWeight: "bold", // Make text bold
-            borderRadius: "50%", // Make text rounded
+            borderRadius: "100%", // Make text rounded
             padding: "5px", // Add padding for roundness
           }}
         >
@@ -37,11 +37,11 @@ function Sidebar() {
         {`
         @keyframes glow {
           0% {
-            text-shadow: 0 0 15px rgba(255, 165, 0, 1);
-          }
-          50% {
-            text-shadow: 0 0 15px rgba(255, 165, 0, 1);
-          }
+    text-shadow: 0 0 20px rgba(255, 165, 0, 0.7); 
+  }
+  50% {
+    text-shadow: 0 0 20px rgba(255, 165, 0, 0.7); 
+  }
         }
         `}
       </style>
