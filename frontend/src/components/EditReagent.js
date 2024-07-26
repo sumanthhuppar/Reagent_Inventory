@@ -80,8 +80,17 @@ function EditReagent() {
       return;
     }
 
-    if (!/^[a-zA-Z]*$/.test(reagent.quantity_measure)) {
-      toast.error("Measure must only include characters.", {
+    //create a validation to quantity_measure, it must always be a alpha numeric
+
+    // if (!/^[a-zA-Z]*$/.test(reagent.quantity_measure)) {
+    //   toast.error("Measure must only include characters.", {
+    //     theme: "dark",
+    //   });
+    //   return;
+    // }
+
+    if (!/^[a-zA-Z0-9\s]*$/.test(reagent.quantity_measure)) {
+      toast.error("Measure must only include alphanumeric characters.", {
         theme: "dark",
       });
       return;
@@ -154,6 +163,17 @@ function EditReagent() {
           />
         </div>
         <div className="form-group">
+          <label htmlFor="packing-type">Packing Type:</label>
+          <input
+            type="text"
+            id="packing-type"
+            name="packing-type"
+            value={reagent.quantity}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="form-group">
           <label htmlFor="quantity">Quantity:</label>
           <input
             type="number"
@@ -194,6 +214,17 @@ function EditReagent() {
             id="expiry"
             name="expiry"
             value={reagent.expiry}
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="setAlert">setAlert</label>
+          <input
+            type="number"
+            id="setAlert"
+            name="setAlert"
+            value={reagent.setAlert}
             onChange={handleChange}
             required
           />

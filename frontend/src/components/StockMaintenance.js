@@ -1,3 +1,4 @@
+import { faFontAwesome } from "@fortawesome/free-solid-svg-icons";
 import React, { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -98,6 +99,43 @@ function StockMaintenance() {
         return response.json();
       })
       .then((data) => {
+
+        // After successful stock update, send an email
+        // const emailData = {
+        //   when: new Date().toISOString(),
+        //   what: selectedReagent.name,
+        //   howMuch: updatedQuantity,
+        // };
+
+        // After successful stock update, send an email
+        const emailData = {
+          dbData: reagents
+        };
+
+        fetch('http://localhost:5000/send-email', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(emailData),
+        })
+          .then(emailResponse => {
+            if (!emailResponse.ok) {
+              throw new Error('Failed to send email');
+            }
+            return emailResponse.json();
+          })
+          .then(() => {
+            toast.success("Email sent successfully.", {
+              theme: "dark",
+            });
+          })
+          .catch(emailError => {
+            toast.error("Failed to send email: " + emailError.message, {
+              theme: "dark",
+            });
+          });
+
         setReagents(reagents.map((r) => (r.id === data.id ? data : r)));
         setSelectedReagent(null);
         setQuantityRemoved({ expiry: "", experiment: "" });
@@ -236,14 +274,9 @@ function StockMaintenance() {
           </div>
           {selectedReagent && (
             <>
-              <div className="form-group note warning">
-                Note: If the expiry date of new stock is the same as existing
-                stock, update the existing stock. If different, add as a new
-                reagent.
-              </div>
               <div className="form-group">
                 <label htmlFor="removed-expiry">
-                  Quantity Removed (Expiry):
+                  Quantity Issued :
                 </label>
                 <input
                   type="number"
@@ -253,7 +286,7 @@ function StockMaintenance() {
                   onChange={(e) => handleQuantityChange(e, "expiry")}
                 />
               </div>
-              <div className="form-group">
+              {/* <div className="form-group">
                 <label htmlFor="removed-experiment">
                   Quantity Removed (Experiment):
                 </label>
@@ -264,7 +297,7 @@ function StockMaintenance() {
                   step="0.01"
                   onChange={(e) => handleQuantityChange(e, "experiment")}
                 />
-              </div>
+              </div> */}
               <div className="form-group">
                 <label htmlFor="added-new">Quantity Added (New Stock):</label>
                 <input
@@ -276,10 +309,20 @@ function StockMaintenance() {
                 />
               </div>
               <div className="form-group">
-                <strong>
-                  Total Quantity: {calculateTotalQuantity()}{" "}
-                  {selectedReagent.quantity_measure}
-                </strong>
+
+                <p>
+                  <strong style={{ fontFamily: 'Arial, sans-serif',fontSize:"18px" }}>
+                    Total Quantity: {calculateTotalQuantity()}
+                  </strong> &#160;
+                  <div style={{ fontWeight: '300', fontFamily: 'Arial, sans-serif',display:"inline",fontSize:"13px" }}>
+                    &#215; {selectedReagent.quantity_measure}
+                  </div>
+
+                </p>
+
+
+
+
               </div>
               <div className="form-actions">
                 <button type="submit">Update Stock</button>
