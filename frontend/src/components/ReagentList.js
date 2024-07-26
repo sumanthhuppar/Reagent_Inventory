@@ -212,11 +212,11 @@ function ReagentList() {
         <div style={styles.colorLabelContainer}>
           <div style={styles.colorLabel}>
             <span style={{ ...styles.colorDot, ...styles.greenDot }}></span> ≥
-            30 days
+            Alert
           </div>
           <div style={styles.colorLabel}>
             <span style={{ ...styles.colorDot, ...styles.orangeDot }}></span>{" "}
-            &lt; 30 days
+            &lt; Alert
           </div>
           <div style={styles.colorLabel}>
             <span style={{ ...styles.colorDot, ...styles.redDot }}></span> 0
@@ -243,10 +243,12 @@ function ReagentList() {
             {filteredReagents.map((reagent, index) => {
               const Alert = reagent.setAlert
               const daysToExpire = getDaysToExpire(reagent.expiry);
+              const quantityAlert = reagent.setQuantity
+              const quantity = reagent.quantity
               const textColor =
                 daysToExpire === 0
                   ? "red"
-                  : daysToExpire <= Alert
+                  : (daysToExpire <= Alert) || (quantity <= quantityAlert)
                     ? "orange"
                     : "green";
               const backgroundColor = index % 2 === 0 ? "#f9f9f9" : "#e0e0e0";

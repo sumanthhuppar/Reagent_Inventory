@@ -28,6 +28,7 @@ def init_db():
                     source TEXT,
                     expiry DATE,
                     setAlert INTEGER,
+                    setQuantity INTEGER,
                     last_updated DATE)''')
     conn.commit()
     conn.close()
@@ -50,7 +51,7 @@ def send_email():
     message = MIMEMultipart()
     message["From"] = sender_email
     message["To"] = receiver_email
-    message["Subject"] = "Automated Email from Flask App"
+    message["Subject"] = "ReAgent REPORT"
 
     #db data in json format
     db_data = data['dbData']
@@ -169,8 +170,8 @@ def reagents():
     if request.method == 'POST':
         data = request.json
         current_date = datetime.now().strftime('%Y-%m-%d')
-        conn.execute('INSERT INTO reagents (name,packingtype, quantity, quantity_measure, source, expiry, setAlert, last_updated) VALUES (?,?, ?, ?, ?, ?, ?, ?)',
-                     (data['name'],data['packingtype'], data['quantity'], data['quantity_measure'], data['source'], data['expiry'], data['setAlert'], current_date))
+        conn.execute('INSERT INTO reagents (name,packingtype, quantity, quantity_measure, source, expiry, setAlert,setQuantity, last_updated) VALUES (?,?, ?, ?, ?, ?, ?, ?,?)',
+                     (data['name'],data['packingtype'], data['quantity'], data['quantity_measure'], data['source'], data['expiry'], data['setAlert'],data['setQuantity'], current_date))
         conn.commit()
         return jsonify({"message": "Reagent added successfully"}), 201
     
@@ -185,8 +186,8 @@ def reagent(id):
     if request.method == 'PUT':
         data = request.json
         current_date = datetime.now().strftime('%Y-%m-%d')
-        conn.execute('UPDATE reagents SET name=?,packingtype=?, quantity=?, quantity_measure=?, source=?, expiry=?, setAlert=?, last_updated=? WHERE id=?',
-                     (data['name'],data['packingtype'], data['quantity'], data['quantity_measure'], data['source'], data['expiry'],data['setAlert'], current_date, id))
+        conn.execute('UPDATE reagents SET name=?,packingtype=?, quantity=?, quantity_measure=?, source=?, expiry=?, setAlert=?,setQuantity = ?, last_updated=? WHERE id=?',
+                     (data['name'],data['packingtype'], data['quantity'], data['quantity_measure'], data['source'], data['expiry'],data['setAlert'], data['setQuantity'], current_date, id))
         conn.commit()
         conn.close()
         return jsonify({"message": "Reagent updated successfully"})
