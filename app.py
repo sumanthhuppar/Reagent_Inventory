@@ -86,14 +86,13 @@ def send_email():
     cursor = conn.cursor()
 
 # Fetch all records from the reagents table
-    cursor.execute("SELECT * FROM reagents")
+    cursor.execute("SELECT name,quantity,expiry FROM reagents")
     rows = cursor.fetchall()
 
 # Start building the HTML table
     html_table = """
         <table border="1">
         <tr>
-        <th>ID</th>
         <th>Name</th>
         <th>Quantity</th>
         <th>Expiration Date</th>
@@ -107,7 +106,6 @@ def send_email():
             <td>{row[0]}</td>
             <td>{row[1]}</td>
             <td>{row[2]}</td>
-            <td>{row[3]}</td>
         </tr>
         """
 

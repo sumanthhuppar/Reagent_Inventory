@@ -217,7 +217,7 @@ function AddReagent() {
         </div>
         <div style={styles.formGroup}>
           <label htmlFor="Set Alert" style={styles.label}>
-            Set Alert
+            Set Alert <p style={{display:"inline",fontWeight:"lighter",fontSize:"13px"}}>in days</p>
           </label>
           <input
             type="number"
@@ -231,7 +231,7 @@ function AddReagent() {
         </div>
         <div style={styles.formGroup}>
           <label htmlFor="Set Alert Quantity" style={styles.label}>
-            Set Alert
+            Set Alert <p style={{display:"inline",fontWeight:"lighter",fontSize:"13px"}}>in quantities</p>
           </label>
           <input
             type="number"
