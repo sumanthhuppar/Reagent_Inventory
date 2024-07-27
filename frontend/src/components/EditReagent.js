@@ -44,6 +44,7 @@ function EditReagent() {
   const [reagent, setReagent] = useState({
     name: "",
     quantity: 0,
+    packingtype: "",
     quantity_measure: "",
     source: "",
     expiry: "",
@@ -146,7 +147,7 @@ function EditReagent() {
 
   return (
     <div className="edit-reagent-container" style={styles.container}>
-      <h1 style={{ color: "#32CD32" }}>Edit Reagents.</h1>
+      <h1 style={{ color: "#32CD32",marginTop:"9px",marginBottom:"9px" }}>Edit Reagents.</h1>
       <form
         className="edit-reagent-form"
         ID="edit_reagent_form"
@@ -156,6 +157,7 @@ function EditReagent() {
         <div className="form-group">
           <label htmlFor="name">Name:</label>
           <input
+          style = {styles.input}
             type="text"
             id="name"
             name="name"
@@ -165,12 +167,13 @@ function EditReagent() {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="packing-type">Packing Type:</label>
+          <label htmlFor="packingtype">Packing Type:</label>
           <input
+          style = {styles.input}
             type="text"
-            id="packing-type"
-            name="packing-type"
-            value={reagent.quantity}
+            id="packingtype"
+            name="packingtype"
+            value={reagent.packingtype}
             onChange={handleChange}
             required
           />
@@ -178,6 +181,7 @@ function EditReagent() {
         <div className="form-group">
           <label htmlFor="quantity">Quantity:</label>
           <input
+          style = {styles.input}
             type="number"
             id="quantity"
             name="quantity"
@@ -190,6 +194,7 @@ function EditReagent() {
         <div className="form-group">
           <label htmlFor="quantity_measure">Measure:</label>
           <input
+          style = {styles.input}
             type="text"
             id="quantity_measure"
             name="quantity_measure"
@@ -201,6 +206,7 @@ function EditReagent() {
         <div className="form-group">
           <label htmlFor="source">Source:</label>
           <input
+          style = {styles.input}
             type="text"
             id="source"
             name="source"
@@ -212,6 +218,7 @@ function EditReagent() {
         <div className="form-group">
           <label htmlFor="expiry">Expiry Date:</label>
           <input
+          style = {styles.input}
             type="date"
             id="expiry"
             name="expiry"
@@ -223,6 +230,7 @@ function EditReagent() {
         <div className="form-group">
           <label htmlFor="setAlert">Set Alert</label>
           <input
+          style = {styles.input}
             type="number"
             id="setAlert"
             name="setAlert"
@@ -235,6 +243,7 @@ function EditReagent() {
         <div className="form-group">
           <label htmlFor="setQuantity">Set Alert</label>
           <input
+          style = {styles.input}
             type="number"
             id="setQuantity"
             name="setQuantity"
@@ -294,4 +303,8 @@ const styles = {
     border: "1px solid rgba(0, 255, 0, 0.4)", // Green tinted border
     backdropFilter: "blur(10px)",
   },
+  input:{
+    width:"97%",
+    marginBottom:"5px"
+  }
 };
